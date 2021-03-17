@@ -24,11 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Admin\FoodType\" />
-    <Folder Include="Pages\Admin\MenuItem\" />
     <Folder Include="Pages\Admin\User\" />
     <Folder Include="Pages\Customers\Cart\" />
     <Folder Include="Pages\Customers\Home\" />
+    <Folder Include="wwwroot\images\menuItems\" />
   </ItemGroup>
 
 </Project>

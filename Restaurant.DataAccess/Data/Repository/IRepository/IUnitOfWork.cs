@@ -7,6 +7,8 @@ namespace Restaurant.DataAccess.Data.Repository.IRepository
    public interface IUnitOfWork:IDisposable
     {
         ICatrgoryRepository Category { get; }
+        IFoodTypeRepository  FoodType { get; }
+        IMenuItemRepository  MenuItem { get; }
         void Save();
     }
 }

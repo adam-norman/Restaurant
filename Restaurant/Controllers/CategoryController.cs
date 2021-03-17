@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Restaurant.DataAccess.Data.Repository.IRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Restaurant.Controllers
 {
@@ -18,6 +13,7 @@ namespace Restaurant.Controllers
         {
             this.unitOfWork = unitOfWork;
         }
+
         [HttpGet]
         public IActionResult Get()
         {
@@ -36,6 +32,5 @@ namespace Restaurant.Controllers
             unitOfWork.Save();
             return Json(new { success = true, message = "Delete successful" });
         }
-
     }
 }
