@@ -18,7 +18,7 @@ namespace Restaurant.Pages.Admin.MenuItem
 
         public UpsertModel(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
         {
-            unitOfWork = unitOfWork;
+            this.unitOfWork = unitOfWork;
             this.hostEnvironment = hostEnvironment;
         }
         [BindProperty]
@@ -28,7 +28,8 @@ namespace Restaurant.Pages.Admin.MenuItem
             MenuItemPbj = new MenuItemVM
             {
                 CategoryList = unitOfWork.Category.GetCategoriesForDropDownList(),
-                FoodTypeList = unitOfWork.FoodType.GetFoodTypeForDropDownList()
+                FoodTypeList = unitOfWork.FoodType.GetFoodTypeForDropDownList(),
+                MenuItem = new Models.MenuItem()
             };
             if (id != null)
             {
@@ -50,19 +51,19 @@ namespace Restaurant.Pages.Admin.MenuItem
             {
                 return Page();
             }
-            if (MenuItemPbj.MenuItem.Id == 0)
+            if (MenuItemPbj.MenuItem.Id == 0)// Add
             {
                 string newFileName = Guid.NewGuid().ToString();
                 string uploadsPath = Path.Combine(serverRootPath, @"images\menuItems");
-                string extention = Path.GetExtension(uploadedFiles[0].Name);
+                string extention = Path.GetExtension(uploadedFiles[0].FileName);
                 using (var fileStream = new FileStream(Path.Combine(uploadsPath, newFileName + extention), FileMode.Create))
                 {
                     uploadedFiles[0].CopyTo(fileStream);
                 }
-                MenuItemPbj.MenuItem.Image = uploadsPath + @"\" + newFileName + extention;
+                MenuItemPbj.MenuItem.Image = @"\images\menuItems\" + newFileName +  extention;
                 unitOfWork.MenuItem.Add(MenuItemPbj.MenuItem);
             }
-            else
+            else// update
             {
                 var menuItemFromDb = unitOfWork.MenuItem.GetFirstOrDefault(i => i.Id == MenuItemPbj.MenuItem.Id);
                 menuItemFromDb.Name = MenuItemPbj.MenuItem.Name;
@@ -70,30 +71,28 @@ namespace Restaurant.Pages.Admin.MenuItem
                 menuItemFromDb.FoodTypeId = MenuItemPbj.MenuItem.FoodTypeId;
                 menuItemFromDb.CategoryId = MenuItemPbj.MenuItem.CategoryId;
                 menuItemFromDb.Price = MenuItemPbj.MenuItem.Price;
-                if (MenuItemPbj.MenuItem.Image != null)
+                //delete existed file first
+                if (uploadedFiles.Count > 0)
                 {
-                    //delete existed file first
-                    if (uploadedFiles.Count > 0)
+                    string existedFilePath = Path.Combine(serverRootPath, menuItemFromDb.Image.TrimStart('\\'));
+                    if (System.IO.File.Exists(existedFilePath))
                     {
-                        string existedFilePath = Path.Combine(hostEnvironment.WebRootPath, menuItemFromDb.Image.TrimStart('\\'));
-                        if (System.IO.File.Exists(existedFilePath))
-                        {
-                            System.IO.File.Delete(existedFilePath);
-                        }
+                        System.IO.File.Delete(existedFilePath);
                     }
                     string newFileName = Guid.NewGuid().ToString();
                     string uploadsPath = Path.Combine(serverRootPath, @"images\menuItems");
-                    string extention = Path.GetExtension(uploadedFiles[0].Name);
+                    string extention = Path.GetExtension(uploadedFiles[0].FileName);
                     using (var fileStream = new FileStream(Path.Combine(uploadsPath, newFileName + extention), FileMode.Create))
                     {
                         uploadedFiles[0].CopyTo(fileStream);
                     }
-                    MenuItemPbj.MenuItem.Image = uploadsPath + @"\" + newFileName + extention;
+                    MenuItemPbj.MenuItem.Image = @"\images\menuItems\" + newFileName + extention;
                 }
                 else
                 {
                     MenuItemPbj.MenuItem.Image = menuItemFromDb.Image;
                 }
+                 
                 unitOfWork.MenuItem.Update(MenuItemPbj.MenuItem);
             }
             unitOfWork.Save();

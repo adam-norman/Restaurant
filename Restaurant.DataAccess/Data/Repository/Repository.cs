@@ -33,13 +33,13 @@ namespace Restaurant.DataAccess.Data.Repository
             IQueryable<T> query = dbSet;
             if (filter != null)
             {
-                query.Where(filter);
+                query= query.Where(filter);
             }
             if (includeProperties != null)
             {
                 foreach (string prop in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    query.Include(prop);
+                    query= query.Include(prop);
                 }
             }
             if (orderBy != null)

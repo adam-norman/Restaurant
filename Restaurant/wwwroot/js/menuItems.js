@@ -12,9 +12,8 @@ function loadCategoriesList() {
             "datatype": "json"
         },
         "columns": [
-            { "data": "name", "width": "40%" },
-            { "data": "description", "width": "20%" },
-            { "data": "price", "width": "20%" },
+            { "data": "name", "width": "20%" },
+            { "data": "price", "width": "10%" },
             { "data": "category.name", "width": "20%" },
             { "data": "foodType.name", "width": "20%" },
             {
@@ -30,13 +29,14 @@ function loadCategoriesList() {
                         </a>
                     </div> `;
                 },
-                "width": "40%"
+                "width": "30%"
             }
         ],
         "language": {
             "emptyTable": "no data found"
         },
-        "width": "100%"
+        "width": "100%",
+        "order":[[2,"asc"]]
     });
 }
 

@@ -1,17 +1,17 @@
 ﻿@page
 @model Restaurant.Pages.Admin.MenuItem.UpsertModel
 
-<form asp-action="Upsert" method="post">
+<form asp-action="Upsert" method="post" enctype="multipart/form-data">
 
     <div class="container">
         <div class="row px-2 mx-2 backgroundWhite border">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @if (Model.MenuItemPbj.MenuItem.Id == 0)
+            @if (Model.MenuItemPbj.MenuItem.Id != 0)
             {
                 <input hidden asp-for="MenuItemPbj.MenuItem.Id" />
             }
             <div class="col-12 px-3" style="border-bottom: 1px solid #325d88">
-                <h2 class="text-primary">@(Model.MenuItemPbj.MenuItem.Id==0?"Create":"Update") Category</h2>
+                <h2 class="text-primary">@(Model.MenuItemPbj.MenuItem.Id==0?"Create":"Update") Menu Item</h2>
             </div>
             <div class="col-8 pt-3">
                 <div class="form-group row">
@@ -38,7 +38,7 @@
                         <label asp-for="MenuItemPbj.MenuItem.Description"></label>
                     </div>
                     <div class="col-9">
-                        <textarea class="form-control" id="txtDesc" style="height:200px" asp-for="MenuItemPbj.MenuItem.Description" />
+                        <textarea class="form-control" id="txtDesc" style="height:200px" asp-for="MenuItemPbj.MenuItem.Description"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -46,8 +46,7 @@
                         <label asp-for="MenuItemPbj.MenuItem.Image"></label>
                     </div>
                     <div class="col-9">
-                        <input type="file" id="fileUpload" name="files" class="form-control" asp-for="MenuItemPbj.MenuItem.Name" />
-
+                        <input type="file" id="fileUpload" name="files" class="form-control" />
                     </div>
                 </div>
                 <div class="form-group row">
@@ -57,7 +56,7 @@
                     <div class="col-9">
                         @Html.DropDownListFor(i => i.MenuItemPbj.MenuItem.CategoryId,
                                                  Model.MenuItemPbj.CategoryList,
-                                                 "- please select a Category -",
+                                                 "- Please select a Category -",
                                                  new { @class = "form-control" })
                         <span class="text-danger" asp-validation-for="MenuItemPbj.MenuItem.CategoryId"></span>
                     </div>
@@ -69,7 +68,7 @@
                     <div class="col-9">
                         @Html.DropDownListFor(i => i.MenuItemPbj.MenuItem.FoodTypeId,
                                                  Model.MenuItemPbj.FoodTypeList,
-                                                 "- please select a Food Type -",
+                                                 "- Please select a Food Type -",
                                                  new { @class = "form-control" })
                         <span class="text-danger" asp-validation-for="MenuItemPbj.MenuItem.FoodTypeId"></span>
                     </div>
@@ -94,6 +93,29 @@
                     </div>
                 </div>
             </div>
+            <div class="col-4 pt-3">
+                @if (Model.MenuItemPbj.MenuItem != null)
+                {
+                    <img src="@Model.MenuItemPbj.MenuItem.Image" alt="@Model.MenuItemPbj.MenuItem.Image" style="width:100%; border-radius:5px; border:1px solid #325d88;" />
+                }
+            </div>
         </div>
     </div>
 </form>
+
+@section scripts{
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'lists',
+            menubar: 'file edit format'
+        });
+        function validateInput() {
+            if (document.getElementById('fileUpload').value == "") {
+                swal("Error", "Please select an image", "error");
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
