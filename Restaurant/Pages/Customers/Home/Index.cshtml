@@ -1,0 +1,39 @@
+﻿@page
+@model Restaurant.Pages.Customers.Home.IndexModel
+
+@foreach (var category in Model.CategoryList)
+{
+    @if (Model.MenuItemList.Where(i => i.CategoryId == category.Id).Count() > 0)
+    {
+        <div class="row container pb-3 backgroundWhite">
+            <div class="col-12">
+                <div class="row">
+                    <h1 class="text-success pl-1"><b>@category.Name</b></h1>
+                    <div class="col-12">
+                        <div class="row my-3">
+                            @foreach (var item in Model.MenuItemList.Where(i => i.CategoryId == category.Id))
+                            {
+                                <div class="col-lg-3 col-xl-3 col-md-6 pb-4">
+                                    <div class="card" style="        border: 2px solid #1b6ec2;border-radius: 5px;">
+                                        <div class="pl-3 pt-1 text-center">
+                                            <h3 class="card-title text-primary"><b>@item.Name</b></h3>
+                                        </div>
+                                        <div class="d-flex justify-content-between form-control" style="border:0px;">
+                                            <div class="col-6 badge badge-warning text-center" style="font-size:14px;">
+                                                @item.Category.Name
+                                            </div>
+                                            <div class="h4 col-6 text-right" style="color:maroon;">@item.Price</div>
+                                        </div>
+                                        <img src="@item.Image" style="width:200px;height:200px;" class="d-flex card-img-top p-2 rounded" />
+                                        <a asp-page="Details" class="btn btn-primary" style="border-radius:2px;" asp-route-id="@item.Id">Details</a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+}
