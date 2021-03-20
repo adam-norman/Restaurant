@@ -1,0 +1,31 @@
+﻿@page
+@model Restaurant.Pages.Admin.User.IndexModel
+<div class="container border backgroundWhite">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-primary">Users List</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a class="btn btn-primary" asp-page="/Account/Register"><i class="fas fa-plus">&nbsp;Create New</i></a>
+        </div>
+
+    </div>
+    <br />
+    <br />
+    <table id="DT_Load" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+    </table>
+</div>
+@section Scripts{
+    <script src="~/js/users.js"></script>
+}
+

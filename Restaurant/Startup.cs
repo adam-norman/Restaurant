@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Restaurant.DataAccess;
 using Restaurant.DataAccess.Data.Repository;
 using Restaurant.DataAccess.Data.Repository.IRepository;
+using Restaurant.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +34,10 @@ namespace Restaurant
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<IdentityUser,IdentityRole>()
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddMvc(options =>
             options.EnableEndpointRouting = false)

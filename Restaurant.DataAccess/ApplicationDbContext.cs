@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Restaurant.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Restaurant.DataAccess
 {
@@ -13,8 +10,10 @@ namespace Restaurant.DataAccess
             : base(options)
         {
         }
+
         public DbSet<Category> Categories { get; set; }
-        public DbSet<FoodType>  FoodTypes { get; set; }
-        public DbSet<MenuItem>   MenuItems { get; set; }
+        public DbSet<FoodType> FoodTypes { get; set; }
+        public DbSet<MenuItem> MenuItems { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
 }

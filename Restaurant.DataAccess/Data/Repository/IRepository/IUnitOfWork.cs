@@ -9,6 +9,7 @@ namespace Restaurant.DataAccess.Data.Repository.IRepository
         ICatrgoryRepository Category { get; }
         IFoodTypeRepository  FoodType { get; }
         IMenuItemRepository  MenuItem { get; }
+        IApplicationUserRepository  ApplicationUser { get; }
         void Save();
     }
 }
