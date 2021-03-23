@@ -1,16 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Restaurant.DataAccess.Data.Repository.IRepository;
+using Restaurant.Utilities;
 using Restaurant.ViewModels;
+using System;
+using System.IO;
 
 namespace Restaurant.Pages.Admin.MenuItem
 {
+    [Authorize(Roles = StaticDetails.ManagerRole)]
     public class UpsertModel : PageModel
     {
         private readonly IUnitOfWork unitOfWork;
@@ -21,8 +21,10 @@ namespace Restaurant.Pages.Admin.MenuItem
             this.unitOfWork = unitOfWork;
             this.hostEnvironment = hostEnvironment;
         }
+
         [BindProperty]
         public MenuItemVM MenuItemPbj { get; set; }
+
         public IActionResult OnGet(int? id)
         {
             MenuItemPbj = new MenuItemVM
@@ -60,7 +62,7 @@ namespace Restaurant.Pages.Admin.MenuItem
                 {
                     uploadedFiles[0].CopyTo(fileStream);
                 }
-                MenuItemPbj.MenuItem.Image = @"\images\menuItems\" + newFileName +  extention;
+                MenuItemPbj.MenuItem.Image = @"\images\menuItems\" + newFileName + extention;
                 unitOfWork.MenuItem.Add(MenuItemPbj.MenuItem);
             }
             else// update
@@ -92,7 +94,7 @@ namespace Restaurant.Pages.Admin.MenuItem
                 {
                     MenuItemPbj.MenuItem.Image = menuItemFromDb.Image;
                 }
-                 
+
                 unitOfWork.MenuItem.Update(MenuItemPbj.MenuItem);
             }
             unitOfWork.Save();

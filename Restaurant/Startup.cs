@@ -34,7 +34,7 @@ namespace Restaurant
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<IdentityUser,IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<IEmailSender, EmailSender>();
@@ -42,7 +42,13 @@ namespace Restaurant
             services.AddMvc(options =>
             options.EnableEndpointRouting = false)
                 .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
-            //services.AddRazorPages();
+            services.AddSession(options =>
+           {
+               options.IdleTimeout = TimeSpan.FromMinutes(10);
+               options.Cookie.IsEssential = true;
+               options.Cookie.HttpOnly = true;
+           }
+            );  
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
@@ -52,7 +58,7 @@ namespace Restaurant
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                
+
             }
             else
             {
@@ -62,6 +68,7 @@ namespace Restaurant
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseMvc();

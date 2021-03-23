@@ -16,13 +16,15 @@ namespace Restaurant.DataAccess.Data.Repository
             FoodType = new FoodTypeRepository(dbContext);
             MenuItem = new MenuItemRepository(dbContext);
             ApplicationUser = new ApplicationUserRepository(dbContext);
+            ShoppingCart  = new ShoppingCartRepository(dbContext);
         }
         public ICatrgoryRepository Category {
             get;
             private set;
         }
         
-        public IApplicationUserRepository  ApplicationUser { get; private set; }
+        public IShoppingCartRepository ShoppingCart { get; private set; }
+        public IApplicationUserRepository ApplicationUser { get; private set; }
         public IFoodTypeRepository  FoodType { get; private set; }
         public IMenuItemRepository MenuItem { get; private set; }
 

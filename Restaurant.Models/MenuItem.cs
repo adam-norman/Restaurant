@@ -12,7 +12,7 @@ namespace Restaurant.Models
         public int Id { get; set; }
         [Required,MaxLength(50)]
         public string Name { get; set; }
-        [MaxLength(100)]
+        [MaxLength(250 ,ErrorMessage ="you shouldn't exceed 250 characters")]
         public string Description { get; set; }
         public string Image { get; set; }
         [Required,Range(1,int.MaxValue,ErrorMessage ="Price should be greater than 1$")]

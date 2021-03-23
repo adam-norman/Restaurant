@@ -60,7 +60,7 @@ namespace Restaurant.DataAccess.Data.Repository
             {
                 foreach (string prop in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    query.Include(prop);
+                    query = query.Include(prop);
                 }
             }
             

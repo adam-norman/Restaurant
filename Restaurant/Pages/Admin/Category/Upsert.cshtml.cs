@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Restaurant.DataAccess.Data.Repository.IRepository;
-
+using Restaurant.Utilities;
+using Microsoft.AspNetCore.Authorization;
 namespace Restaurant.Pages.Admin.Category
 {
+    [Authorize(Roles = StaticDetails.ManagerRole)]
     public class UpsertModel : PageModel
     {
         private readonly IUnitOfWork unitOfWork;

@@ -16,17 +16,28 @@ function loadCategoriesList() {
             { "data": "email", "width": "25%" },
             { "data": "phoneNumber", "width": "20%" },
             {
-                "data": "id",
+                "data": {id:  'id', lockoutEnd: 'lockoutEnd'},
                 "render": function (data) {
-                    return `
+                    var todayDate = new Date().getTime();
+                    var lockendDate = new Date(data.lockoutEnd).getTime();
+                    // already locked
+                    if (todayDate < lockendDate) {
+                        console.log('unlock');
+                        return `
                     <div class="text-center">
-                        <a href="/admin/category/upsert?id=${data}" class="btn btn-success text-white" style="cursor:pointer; width:100px;">
-                            <i class="fas fa-edit">edit</i>
+                        <a class="btn btn-danger text-white" style="cursor:pointer; width:100px;" onclick=UserAccountLockToggler('${data.id}','${'UnLock'}')>
+                         <i class="fas fa-lock-open"></i> Unlock
                         </a>
-                        <a href="#" class="btn btn-danger text-white" style="cursor:pointer; width:100px;" onclick=DeleteCategory('/api/category/'+${data})>
-                            <i class="fas fa-trash-alt">delete</i>
+                    </div>`;
+                    } else {
+                        return `
+                    <div class="text-center">
+                        <a class="btn btn-success text-white" style="cursor:pointer; width:100px;" onclick=UserAccountLockToggler('${data.id}','${'Lock'}')>
+                              <i class="fas fa-lock"></i> Lock
                         </a>
-                    </div> `;
+                    </div>`;
+                    }
+                     
                 },
                 "width": "40%"
             }
@@ -39,19 +50,21 @@ function loadCategoriesList() {
 }
 
 
-function DeleteCategory(url) {
-    console.log(url);
+function UserAccountLockToggler(id,toggleAction) {
+    
     swal({
-        title: "Delete Category",
-        text: "Are you sure you need to delete this cateory?",
+        title:  toggleAction+" the user account",
+        text: "Are you sure you need to "+toggleAction+"?",
         icon: "warning",
         buttons: true,
         dangerMode: true
-    }).then((willDelete) => {
-        if (willDelete) {
+    }).then((toggle) => {
+        if (toggle) {
             $.ajax({
-                url: url,
-                type: 'DELETE',
+                url: '/api/user',
+                type: 'POST',
+                data: JSON.stringify(id),
+                contentType: 'application/json; charset=UTF-8',
                 success: function (data) {
                     if (data.success) {
                         toastr.success(data.message);
@@ -61,7 +74,6 @@ function DeleteCategory(url) {
                         toastr.error(data.message);
                     }
                 }
-
             });
         }
         });
