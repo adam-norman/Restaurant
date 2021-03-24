@@ -17,6 +17,8 @@ namespace Restaurant.DataAccess.Data.Repository
             MenuItem = new MenuItemRepository(dbContext);
             ApplicationUser = new ApplicationUserRepository(dbContext);
             ShoppingCart  = new ShoppingCartRepository(dbContext);
+            OrderHeader  = new OrderHeaderRepository(dbContext);
+            OrderDetail  = new OrderDetailRepository(dbContext);
         }
         public ICatrgoryRepository Category {
             get;
@@ -24,6 +26,8 @@ namespace Restaurant.DataAccess.Data.Repository
         }
         
         public IShoppingCartRepository ShoppingCart { get; private set; }
+        public IOrderHeaderRepository OrderHeader { get; private set; }
+        public IOrderDetailRepository OrderDetail { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
         public IFoodTypeRepository  FoodType { get; private set; }
         public IMenuItemRepository MenuItem { get; private set; }
